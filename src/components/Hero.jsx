@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const Hero = () => {
@@ -8,12 +8,22 @@ const Hero = () => {
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-    const scrollToNext = () => {
-        window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth'
-        });
-    };
+    // النص المراد كتابته تلقائياً
+    const fullText = `دودتي وحبيبت قلبي انهاردة يوم م عادي انهاردة اليوم اللي اتولدت فيه اجمل انسانه خلقها ربنا 💗 أنتی اجمل صدفه حصلتلي فحياتي من ساعة مبقينا مع بعض وانا كل حياتي اتغيرت للأحسن ومن ساعتها اتأكدت اني حياتي م هينفع تكمل غير بيكي ينوور عيني 💗كل يوم بيعدي علينا مع بعض يروحي بيبقي احلا يوم فحياتي والله 😘وانا بالنسبالي اليوم دا اجمل يوم فيحاتيي ،نفسي اقولك كلام كتيييير يروحي والله بس مهما قولت م هقدر اوصفلك اللي ف قلبي ليكي ينوور عيني انتي م بس حبيبتي انتي كل حياتي انتي هدية ربنا ليا اللي بدعي فكل صلاتي انو يجمعني بيكي علي خير عارف انك داخلة علي اكتر سنتين هتتعبي فيهم فحياتك بس انتي قدها ينوور عيني وهتحققي حلمنا وتبقي احلي دكتورة ف الدنيا🥰 وعايز اقولك ان كلمة بحبك دي قليلة اوي عليكي انا بعشقككك وبدمنكك ينور عيني 💗ربنا يجمعني بيكي علي خير يست البنات 💗ووعد ينور عيني ثقتك فيا هكون قدها وهتعب علشان خاطر احقق حلمنا ونبقي لبعض ف النهاية يحبيبت قلبي💗 بجد بجد ينور عيني الكلام م كفايا والله علشان اوصفلك اللي ف قلبي بتمنالك سنة سعيدة ينوور عيني💗💗احلي كل سنة وانتي طيبة ي احلي دودااا ربنا ميحرمني منك يروحي💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗`;
+
+    const [displayedText, setDisplayedText] = useState('');
+    const [index, setIndex] = useState(0);
+
+    // تأثير الكتابة التلقائية حرف بحرف
+    useEffect(() => {
+        if (index < fullText.length) {
+            const timeout = setTimeout(() => {
+                setDisplayedText((prev) => prev + fullText.charAt(index));
+                setIndex((prev) => prev + 1);
+            }, 30); // سرعة الكتابة (كلما قل الرقم زادت السرعة)
+            return () => clearTimeout(timeout);
+        }
+    }, [index, fullText]);
 
     return (
         <motion.section
@@ -57,7 +67,7 @@ const Hero = () => {
             ))}
 
             {/* 3. المحتوى الرئيسي */}
-            <motion.div style={{ y: y1, opacity }} className="z-20 flex flex-col items-center text-center px-4">
+            <motion.div style={{ y: y1, opacity }} className="z-20 flex flex-col items-center text-center px-4 max-w-4xl">
 
                 {/* الشارة العلوية */}
                 <motion.div
@@ -87,18 +97,17 @@ const Hero = () => {
                     </span>
                 </motion.h1>
 
-                {/* الرسالة العاطفية */}
+                {/* الرسالة العاطفية (بنظام الكتابة التلقائية Typewriter) */}
                 <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.8 }}
-                    className="space-y-4"
+                    className="space-y-4 max-h-[35vh] overflow-y-auto px-2 custom-scrollbar"
                 >
-                    <p className="text-sm md:text-2xl font-light text-white/60 tracking-wide pt-4">
-                        دودتي وحبيبت قلبي انهاردة يوم م عادي انهاردة اليوم اللي اتولدت فيه اجمل انسانه خلقها ربنا 💗
-                        انتي اجمل صدفه حصلتلي فحياتي من ساعة مبقينا مع بعض وانا كل حياتي اتغيرت للأحسن ومن ساعتها اتأكدت اني حياتي م هينفع تكمل غير بيكي ينوور عيني 💗كل يوم بيعدي علينا مع بعض يروحي بيبقي احلا يوم فحياتي والله 😘وانا بالنسبالي اليوم دا اجمل يوم فيحاتيي ،نفسي اقولك كلام كتيييير يروحي والله بس مهما قولت م هقدر اوصفلك اللي ف قلبي ليكي ينوور عيني انتي م بس حبيبتي انتي كل حياتي انتي هدية ربنا ليا اللي بدعي فكل صلاتي انو يجمعني بيكي علي خير
-                        عارف انك داخلة علي اكتر سنتين هتتعبي فيهم فحياتك بس انتي قدها ينوور عيني وهتحققي حلمنا وتبقي احلي دكتورة ف الدنيا🥰 وعايز اقولك ان كلمة بحبك دي قليلة اوي عليكي انا بعشقككك وبدمنكك ينور عيني 💗ربنا يجمعني بيكي علي خير يست البنات 💗ووعد ينور عيني ثقتك فيا هكون قدها وهتعب علشان خاطر احقق حلمنا ونبقي لبعض ف النهاية يحبيبت قلبي💗 بجد بجد ينور عيني الكلام م كفايا والله علشان اوصفلك اللي ف قلبي بتمنالك سنة سعيدة ينوور عيني💗💗احلي كل سنة وانتي طيبة ي احلي دودااا ربنا ميحرمني منك يروحي💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗💗                    </p>
-
+                    <p className="text-sm md:text-xl font-light text-white/80 tracking-wide pt-4 leading-relaxed whitespace-pre-wrap">
+                        {displayedText}
+                        <span className="inline-block w-1.5 h-5 bg-pink-500 ml-1 animate-pulse align-middle"></span>
+                    </p>
                 </motion.div>
             </motion.div>
 
